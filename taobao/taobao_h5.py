@@ -3,13 +3,7 @@
 # @Author  : ken
 '''
 
-'''
-
-# -*- coding: utf-8 -*-
-# @Time    : 2020-03-30 16:11
-# @Author  : ken
-'''
-这个脚本只是做了模拟请求,没有做模拟登陆拿cookie.
+这个脚本只是做了h5模拟请求,没有做模拟登陆拿cookie.
 
 遇到的坑:
 1.sign参数顺序一致.
@@ -20,10 +14,6 @@ import json
 import time
 import execjs
 import urllib
-from app.utils_ydf import RequestClient, re_search_group, webdriver_pool
-from app.utils_ydf import LogManager
-
-logger = LogManager('taobao_qmsd').get_logger_and_add_handlers(log_filename='/Users/ken/Desktop/logs4')
 
 
 class TianMao:
@@ -32,8 +22,9 @@ class TianMao:
     # t = str(int(time.time() * 1000))
     lists = []
 
-    def __init__(self, token):
+    def __init__(self, token,cookie):
         self.token = token
+        self.cookie = cookie
 
     def get_goods_data(self, page):
         '''
@@ -72,7 +63,7 @@ class TianMao:
                 '&dataType=jsonp' \
                 '&callback=mtopjsonp9' \
                 f'&data=%7B%22m%22%3A%22shopitemsearch%22%2C%22vm%22%3A%22nw%22%2C%22sversion%22%3A%224.6%22%2C%22shopId%22%3A%22575905230%22%2C%22sellerId%22%3A%222200723654612%22%2C%22style%22%3A%22wf%22%2C%22page%22%3A{page}%2C%22sort%22%3A%22_coefp%22%2C%22catmap%22%3A%22%22%2C%22wirelessShopCategoryList%22%3A%22%22%7D'
-        logger.info(f'请求URL: {url}')
+        print(f'请求URL: {url}')
         headers = {
             'authority': 'h5api.m.taobao.com',
             'method': 'GET',
@@ -82,7 +73,7 @@ class TianMao:
             'accept-encoding': 'gzip, deflate, br',
             'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
             'cache-control': 'no-cache',
-            'cookie': 'miid=24666692082798684; thw=cn; tracknick=%5Cu4F17%5Cu751F%5Cu666E%5Cu6E21; tg=0; cna=Rzf3FjNUjHICAbcPty9iA0f8; enc=UY6B%2BsOgY43TW%2Be2jF4d4AjksBv1j9tAncstac1UxZUJ6IhMT7%2FtBJPtdSCGcNdcYi5%2BX7%2BKFGRJ%2Fy1jKkjBKA%3D%3D; t=de58dd33545b25d6ca592af8552d80fc; hng=CN%7Czh-CN%7CCNY%7C156; sgcookie=Emu60XnBIG8fkf1pZUcN8; uc3=vt3=F8dBxdAR%2BnV8e9wSnww%3D&id2=VADRCPt%2B%2BmM5&nk2=tZHuySBCXU8%3D&lg2=WqG3DMC9VAQiUQ%3D%3D; lgc=%5Cu4F17%5Cu751F%5Cu666E%5Cu6E21; uc4=id4=0%40Vhm8R4ABgiNxyx7H23f%2FeM%2FiG5o%3D&nk4=0%40tyVcZGwI5BN80RWzowA4rSHOsA%3D%3D; _cc_=Vq8l%2BKCLiw%3D%3D; tfstk=cSYNBFtZ-ZvIP41wWabV1rYul-OOZQOMiy55j38nzfXKm1jGisyAtFbhTs6--Gf..; mt=ci=35_1; l=dBMfdTsPvpvP5qr0BOCMVDKs9q7OSIRAgulp10Bvi_5BJ6T6VlQOo_do7F96VjWfTSYB4ps6amJ9-etbw7Hmndp4bWF_1xDc.; cookie2=1785a069f3044e43e2a27b5de2d59198; _tb_token_=e3e7e97877776; isg=BD09yCMnP9lkUpm5puvgbJ_VTJ832nEs9rU4NP-CeBTCNl1oxykE_Br35mxwtonk; _m_h5_tk=68081ae389bd78cf11da549bd4b7c5d7_1585832382629; _m_h5_tk_enc=9b81951bf54dc2e76dad40254c12b570',
+            'cookie': self.cookie,
             'pragma': 'no-cache',
             'referer': 'https://market.m.taobao.com/app/tb-source-app/shop-auction/pages/auction?_w&sellerId=2200723654612&shopId=575905230&dynamicCard=true&disablePromotionTips=true&shop_navi=allitems&displayShopHeader=true',
             'sec-fetch-dest': 'script',
@@ -90,17 +81,17 @@ class TianMao:
             'sec-fetch-site': 'same-site',
             'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
         }
-        result = RequestClient([RequestClient.KUAI,RequestClient.ABUYUN]).request('GET', url, headers=headers) # 代理请求
-        # result = requests.request('GET', url, headers=headers)
+        result = requests.request('GET', url, headers=headers) # 需要添加代理请求
 
         cookies = requests.utils.dict_from_cookiejar(result.cookies)
         print(cookies)
-        logger.info(f'请求返回数据: {result.text}')
+        print(f'请求返回数据: {result.text}')
 
         # 清洗数据
         data = result.text.split('mtopjsonp9(')[1][:-1]
-        logger.info(f'清洗后数据: {data}')
+        print(f'清洗后数据: {data}')
         self.clean_data(page, json.loads(data))
+        return data
 
     def sign(self, token, page, t):
         '''参数破解'''
@@ -277,7 +268,7 @@ class TianMao:
         data : json数据
         '''
         try:
-            logger.info(f'第{page}页商品数据: {data["data"]["itemsArray"]}')
+            print(f'第{page}页商品数据: {data["data"]["itemsArray"]}')
             for i in data['data']['itemsArray']:
                 data = {
                     'price': i['priceWap'],
@@ -293,11 +284,12 @@ if __name__ == '__main__':
 
     # token需要模拟登录,获取cookie的 _m_h5_tk字段值
     token = '68081ae389bd78cf11da549bd4b7c5d7'
-    t = TianMao(token)
+    cookie = ''
+    t = TianMao(token,cookie)
     for i in range(1, 11):
-        logger.info(f'正在请求第{i}页')
+        print(f'正在请求第{i}页')
         t.get_goods_data(i)
         time.sleep(3)
-    logger.info(f'这次请求所有数据: {TianMao.lists}')
+    print(f'这次请求所有数据: {TianMao.lists}')
 
 
