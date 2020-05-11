@@ -22,9 +22,11 @@ class TianMao:
     # t = str(int(time.time() * 1000))
     lists = []
 
-    def __init__(self, token,cookie):
+    def __init__(self, token, cookie, id=None, appkey=12574478):
         self.token = token
         self.cookie = cookie
+        self.shop = id
+        self.appkey = appkey
 
     def get_goods_data(self, page):
         '''
@@ -37,7 +39,7 @@ class TianMao:
         '''page=1 url中是str,page!=1 url中是int'''
         if page == 1:
             url = f'https://h5api.m.taobao.com/h5/mtop.taobao.wsearch.appsearch/1.0/?jsv=2.5.1' \
-                f'&appKey=12574478' \
+                f'&appKey={self.appkey}' \
                 f'&t={t}' \
                 f'&sign={self.sign(self.token, page, t)}' \
                 '&api=mtop.taobao.wsearch.appSearch' \
@@ -51,7 +53,7 @@ class TianMao:
                 f'&data=%7B%22m%22%3A%22shopitemsearch%22%2C%22vm%22%3A%22nw%22%2C%22sversion%22%3A%224.6%22%2C%22shopId%22%3A%22575905230%22%2C%22sellerId%22%3A%222200723654612%22%2C%22style%22%3A%22wf%22%2C%22page%22%3A%22{page}%22%2C%22sort%22%3A%22_coefp%22%2C%22catmap%22%3A%22%22%2C%22wirelessShopCategoryList%22%3A%22%22%7D'
         if page != 1:
             url = f'https://h5api.m.taobao.com/h5/mtop.taobao.wsearch.appsearch/1.0/?jsv=2.5.1' \
-                f'&appKey=12574478' \
+                f'&appKey={self.shop}' \
                 f'&t={t}' \
                 f'&sign={self.sign(self.token, page, t)}' \
                 '&api=mtop.taobao.wsearch.appSearch' \
@@ -93,7 +95,7 @@ class TianMao:
         self.clean_data(page, json.loads(data))
         return data
 
-    def sign(self, token, page, t):
+    def sign(self, token, page, t, shop):
         '''参数破解'''
         js = '''    function h(a) {
         function b(a, b) {
@@ -253,13 +255,13 @@ class TianMao:
     }'''
         param = None
         if page == 1:
-            param = f'{token}&{t}&12574478&' + '{"m":"shopitemsearch","vm":"nw","sversion":"4.6","shopId":"575905230","sellerId":"2200723654612","style":"wf","page":"%s","sort":"_coefp","catmap":"","wirelessShopCategoryList":""}' % page
+            param = f'{token}&{t}&{self.appkey}&' + '{"m":"shopitemsearch","vm":"nw","sversion":"4.6","shopId":"%s","sellerId":"2200723654612","style":"wf","page":"%s","sort":"_coefp","catmap":"","wirelessShopCategoryList":""}' % shop, page
         if page != 1:
-            param = f'{token}&{t}&12574478&' + '{"m":"shopitemsearch","vm":"nw","sversion":"4.6","shopId":"575905230","sellerId":"2200723654612","style":"wf","page":%s,"sort":"_coefp","catmap":"","wirelessShopCategoryList":""}' % page
+            param = f'{token}&{t}&{self.appkey}&' + '{"m":"shopitemsearch","vm":"nw","sversion":"4.6","shopId":"%s","sellerId":"2200723654612","style":"wf","page":%s,"sort":"_coefp","catmap":"","wirelessShopCategoryList":""}' % shop, page
         ej = execjs.compile(js)
         result = ej.call('h', param)
-        logger.info(f'加密参数: {param}')
-        logger.info(f'sign值: {result}')
+        print(f'加密参数: {param}')
+        print(f'sign值: {result}')
         return result
 
     def clean_data(self,page, data):
@@ -285,7 +287,9 @@ if __name__ == '__main__':
     # token需要模拟登录,获取cookie的 _m_h5_tk字段值
     token = '68081ae389bd78cf11da549bd4b7c5d7'
     cookie = ''
-    t = TianMao(token,cookie)
+    id  = ''
+    appkey = ''
+    t = TianMao(token,cookie,id,appkey)
     for i in range(1, 11):
         print(f'正在请求第{i}页')
         t.get_goods_data(i)
