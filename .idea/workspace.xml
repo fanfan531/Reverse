@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97a10f2b-449e-4486-a71a-2e5f8dd2bb6f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/taobao/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/taobao/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/taobao/taobao_h5.py" beforeDir="false" afterPath="$PROJECT_DIR$/taobao/taobao_h5.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/taobao/taobao_web.py" beforeDir="false" afterPath="$PROJECT_DIR$/taobao/taobao_web.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,20 +36,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/taobao/taobao_web.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="42" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="42" />
+            <state relative-caret-position="257">
+              <caret line="33" column="63" lean-forward="true" selection-start-line="33" selection-start-column="63" selection-end-line="33" selection-end-column="63" />
               <folding>
                 <element signature="e#72#87#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/miniconda3/envs/conda3.7/lib/python3.7/site-packages/requests/api.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="25" column="18" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -69,6 +57,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>销量</find>
+      <find>POLO</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -173,7 +162,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2536349" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -242,8 +230,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/taobao/taobao_web.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="42" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="42" />
+        <state relative-caret-position="257">
+          <caret line="33" column="63" lean-forward="true" selection-start-line="33" selection-start-column="63" selection-end-line="33" selection-end-column="63" />
           <folding>
             <element signature="e#72#87#0" expanded="true" />
           </folding>
